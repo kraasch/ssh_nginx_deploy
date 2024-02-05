@@ -1,5 +1,5 @@
 
-# Auto deploy script from Vue to Nginx via SSH.
+# Deploy script for local web project to Nginx server via SSH.
 
 This script automatically creates an Nginx configuration on the remote server.
 It manipulates directotries like
@@ -62,7 +62,7 @@ Make sure to keep all config files up to date according to what ever versions yo
  - other related topics
    - https://www.digitalocean.com/community/tutorials/install-uninstall-nodejs-ubuntu
    - https://vuetifyjs.com/en/features/theme/
-   - [https://www.youtube.com/watch?v=QcNBLSSn8Vg](How to Point a Domain Name to an IP Address), a video that teaches about DNS records.
+   - [How to Point a Domain Name to an IP Address](https://www.youtube.com/watch?v=QcNBLSSn8Vg), a video that teaches about DNS records.
  - deploy vue on nginx
    - https://jgefroh.medium.com/a-guide-to-using-nginx-for-static-websites-d96a9d034940
    - https://www.digitalocean.com/community/tutorials/how-to-publish-a-vuetify-app-with-nginx-on-ubuntu-20-04
