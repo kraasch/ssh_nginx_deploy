@@ -68,6 +68,7 @@ certbot_suffix=_certbot
 ```
 
 The `webpage_file_dir` and `app_name` are the directories created for the web project on the web server.
+The variable `app_name` can be found `/var/www/APP` and the variable `webpage_file_dir` in `/etc/nginx/sites-.../`.
 The `domain_name` is part of Nginx's configuration.
 The `ssh_alias` must be the same as mentioned before.
 The `certbot_suffix` can be empty if cerbot is not used or must otherwise be equal to `_certbot`.
