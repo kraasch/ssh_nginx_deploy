@@ -57,11 +57,6 @@ If this is the initial deploy consider setting up **certbot** afterwards.
 **Note**: this script includes the current config files for ssh, nginx and certbot.
 Make sure to keep all config files up to date according to what ever versions you are running.
 
-## to-do.
-
- - [ ] add function which creates pass profile stub.
- - [ ] add function which lists all pass profiles.
-
 ## Related resources on the web
 
  - other related topics
