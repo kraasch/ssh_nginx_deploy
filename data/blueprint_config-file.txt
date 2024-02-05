@@ -1,0 +1,8 @@
+server {
+  listen 80;
+  listen [::]:80;
+  server_name <DOMAIN_NAME>;
+  autoindex on;
+  root   /var/www/<APP_NAME>;
+  index  index.html;
+}

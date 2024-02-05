@@ -1,0 +1,82 @@
+#! /bin/bash
+
+SCRIPT_DIR=$(cd -- "$(dirname -- "$(readlink -f "${BASH_SOURCE[0]}" || ${BASH_SOURCE[0]})")" &>/dev/null && pwd)
+TEMP_CONFIG="./.temp_ssh_deploy_config_$(date +%s)"
+
+function clean() {
+	# remove temp files.
+	rm -f "${TEMP_CONFIG}"
+}
+
+function setup() {
+	clean
+	# get the right nginx config file (with or without cerbot sections).
+	cp "${SCRIPT_DIR}/../data/blueprint_config-file${certbot_suffix}.txt" "${TEMP_CONFIG}"
+	# substitute variables.
+	sed "s|<DOMAIN_NAME>|${domain_name}|g" -i "${TEMP_CONFIG}"
+	sed "s|<APP_NAME>|${app_name}|g" -i "${TEMP_CONFIG}"
+}
+
+function remote-clean-all() {
+	# remove remote files.
+	ssh "${ssh_alias}" "rm -f /etc/nginx/sites-available/${app_name}.config"
+	ssh "${ssh_alias}" "rm -f /etc/nginx/sites-enabled/${app_name}.config"
+}
+
+function redeploy() {
+	# clean remote project directory.
+	ssh "${ssh_alias}" "rm -rf /var/www/${app_name}"
+
+	# upload project files.
+	### TODO: auto-detect project structure and location of index.html.
+	# scp -r ./temp_webpage/dist/ ${ssh_alias}:/var/www/${app_name} # upload vue directory.
+	scp -r "${webpage_file_dir}/" "${ssh_alias}:/var/www/${app_name}" # upload small project.
+
+	# recursively change user to 'www-data'.
+	ssh ${ssh_alias} "chown -R www-data:www-data /var/www/${app_name}"
+}
+
+function deploy() {
+	# run remote-clean section.
+	remote-clean-all
+	# run redeploy section.
+	redeploy
+	#  upload config file.
+	scp "${TEMP_CONFIG}" "${ssh_alias}:/etc/nginx/sites-available/${app_name}.config"
+	# link config file.
+	ssh ${ssh_alias} "ln -s /etc/nginx/sites-available/${app_name}.config /etc/nginx/sites-enabled/${app_name}.config"
+	# restart the nginx server.
+	ssh ${ssh_alias} "systemctl restart nginx"
+}
+
+function main() {
+	echo "> Setup."
+	setup
+	echo "> Deploy."
+	deploy
+	echo "> Clean."
+	clean
+	echo "> Done."
+}
+
+# Read global variables.
+echo "> Config."
+if $(test -n "$1"); then
+	SRC="./$1"
+elif $(test -f 'ssh_deploy.conf'); then
+	SRC=ssh_deploy.conf
+elif $(test -f '.ssh_deploy.conf'); then
+	SRC=.ssh_deploy.conf
+else
+	echo "Exit: no configuration found."
+	exit
+fi
+source "$SRC"
+echo "  - webpage_file_dir: ${webpage_file_dir}."
+echo "  - app_name:         ${app_name}."
+echo "  - domain_name:      ${domain_name}."
+echo "  - ssh_alias:        ${ssh_alias}."
+echo "  - certbot_suffix:   ${certbot_suffix}."
+
+# Start main script.
+main
