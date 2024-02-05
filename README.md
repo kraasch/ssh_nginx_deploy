@@ -21,8 +21,11 @@ Basic checklist:
 
  - [ ] Create ssh alias in `~/.ssh/config`.
  - [ ] Run ssh-agent (optional but recommended).
+ - [ ] Provide a basic shell config file for with the project data.
  - [ ] Install and configure ssh and nginx on remote server.
- - [ ] Add entry to the `pass` command-line utiltiy at `/identities/auto/APP/` with the matching values.
+ - [ ] Run `ssh_deploy` commnand.
+
+### Create an SSH alias
 
 Add an entry of the follwing form to your `~/.ssh/config` file:
 
@@ -34,6 +37,8 @@ Host some_ssh_alias
 	hostname <YOUR_IP>
 	Port <YOUR_PORT>
 ```
+
+### Run the SSH agent.
 
 Also consider adding the ssh key to the key chain in order to avoid reyping the local encryption password.
 For this make sure the `ssh-agent` is running the `private_key` is added to the agent with the `ssh-add` command:
@@ -48,7 +53,28 @@ This means the public keys for **shh** must be configured on the remote server.
 
 If everything is ready to go initially run the command `make setup`.
 This will setup a temporary config file `temp_config-file` and a temporary link `temp_webpage` to the web project directory containing the `dist` directory.
-Then run the command `make deploy` to deploy everything according to the configuration to the remote server.
+
+### Setup shell config file for local project
+
+Write a file named `ssh_deploy.conf` (can be hidden too) with the following content.
+
+```
+#! /bin/bash
+webpage_file_dir=example-com
+app_name=myweb
+domain_name=example.com
+ssh_alias=some_ssh_alias
+certbot_suffix=_certbot
+```
+
+The `webpage_file_dir` and `app_name` are the directories created for the web project on the web server.
+The `domain_name` is part of Nginx's configuration.
+The `ssh_alias` must be the same as mentioned before.
+The `certbot_suffix` can be empty if cerbot is not used or must otherwise be equal to `_certbot`.
+
+### Run the script
+
+Then run the command `ssh_deploy [<config_file_name>]` to deploy everything according to the configuration to the remote server.
 
 For subsequent deploys -- e.g. after code chagnes in the web project directory -- only run the command `make redeploy`.
 
