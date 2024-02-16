@@ -42,7 +42,7 @@ function deploy() {
 	# run redeploy section.
 	redeploy
 	#  upload config file.
-	###	scp "${TEMP_CONFIG}" "${ssh_alias}:/etc/nginx/sites-available/${app_name}.config" ### FIXME: TEMP_CONFIG is the wrong config file. Upload NGINX config here.
+	scp "${TEMP_CONFIG}" "${ssh_alias}:/etc/nginx/sites-available/${app_name}.config" ### FIXME: TEMP_CONFIG is the wrong config file. Upload NGINX config here.
 	# link config file.
 	ssh ${ssh_alias} "ln -s /etc/nginx/sites-available/${app_name}.config /etc/nginx/sites-enabled/${app_name}.config"
 	# restart the nginx server.
