@@ -4,7 +4,7 @@ server {
   root   /var/www/<APP_NAME>;
   index  index.html;
 
-    listen [::]:443 ssl ipv6only=on; # managed by Certbot
+    # listen [::]:443 ssl ipv6only=on; # managed by Certbot # (do not use for multiple domains simultaneously).
     listen 443 ssl; # managed by Certbot
     ssl_certificate /etc/letsencrypt/live/<DOMAIN_NAME>/fullchain.pem; # managed by Certbot
     ssl_certificate_key /etc/letsencrypt/live/<DOMAIN_NAME>/privkey.pem; # managed by Certbot
@@ -19,7 +19,7 @@ server {
 
 
   listen 80;
-  listen [::]:80;
+  # listen [::]:80; # (do not use for multiple domains simultaneously).
   server_name <DOMAIN_NAME>;
     return 404; # managed by Certbot
 
