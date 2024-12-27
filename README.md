@@ -94,5 +94,7 @@ Make sure to keep all config files up to date according to what ever versions yo
    - https://jgefroh.medium.com/a-guide-to-using-nginx-for-static-websites-d96a9d034940
    - https://www.digitalocean.com/community/tutorials/how-to-publish-a-vuetify-app-with-nginx-on-ubuntu-20-04
    - https://certbot.eff.org/instructions?ws=nginx&os=debianbuster
+ - other
+  - https://www.serverlab.ca/tutorials/linux/web-servers-linux/how-to-configure-multiple-domains-with-nginx-on-ubuntu/
 
 
